@@ -2,7 +2,11 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+const ChecklistRouter = require("./src/routes/checklist.js"); // Aqui nós importamos o checklist,
 
+
+
+/*
 // Podemos criar um middleware está é a estrutura.
 
 const log = (req, res,next ) => {
@@ -22,6 +26,10 @@ app.get('/', (req,res) => {
 app.get("/json", (req,res) =>{
 	res.json({"title": "Era um vez", "lugar": "Meio do nada"})
 });
+
+*/
+
+app.use("/checklist",ChecklistRouter);
 
 app.listen(3000, () => {
 	console.log("Servidor Ligado");
