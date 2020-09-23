@@ -1,12 +1,16 @@
 const express = require('express');
 const app = express();
-app.use(express.json());
-
+const path = require('path');
+app.set('view engine', 'ejs');
 require('./src/config/database.js');
 
 const ChecklistRouter = require("./src/routes/checklist.js"); // Aqui nós importamos o checklist,
+const rootRouter = require("./src/routes/index.js");
 
+app.use(express.json());
+app.set('views', path.join(__dirname, 'src/views'));
 
+app.use(express.static(path.join(__dirname, 'public')));  // Habilitando o use de arquivos estáticos
 
 /*
 // Podemos criar um middleware está é a estrutura.
@@ -32,6 +36,7 @@ app.get("/json", (req,res) =>{
 */
 
 app.use("/checklists",ChecklistRouter);
+app.use('/', rootRouter);
 
 app.listen(3000, () => {
 	console.log("Servidor Ligado");
