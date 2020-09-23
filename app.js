@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+require('./src/config/database.js');
+
 const ChecklistRouter = require("./src/routes/checklist.js"); // Aqui nós importamos o checklist,
 
 
@@ -29,7 +31,7 @@ app.get("/json", (req,res) =>{
 
 */
 
-app.use("/checklist",ChecklistRouter);
+app.use("/checklists",ChecklistRouter);
 
 app.listen(3000, () => {
 	console.log("Servidor Ligado");

@@ -2,7 +2,7 @@
   "name": "api_to_do_list",
   "version": "1.0.0",
   "description": "Utilizando Node - Express com a finalidade de realizar um gerenciador de tarefas",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
