@@ -7,11 +7,32 @@ const Checklist = require("../models/checklist")
 router.get("/", async (req,res) => {
 	try{
 		let checklists = await Checklist.find({});
-		res.status(200).json(checklists);
+		res.render('checklists/index', {checklists: checklists}); // ainda estou passando uma variável para a view;
 	} catch (error){
 		res.status(422).json(error);
 	}
 })
+
+router.get("/new", async (req,res) => {
+	try{
+		let checklist = new Checklist();
+		res.status(200).render('checklists/new', {checklist: checklist});
+	}catch (error){
+		res.status(500)
+	}
+})
+
+router.get("/:id", async (req,res) => {
+	try{
+		let checklist = await Checklist.findById(req.params.id);
+		console.log(checklist.tasks)
+		res.render('checklists/show', {checklist: checklist}); // aqui também estou passando variável para ser empregada na view
+	}catch (error){
+		res.status(422).json(error);
+	}
+})
+
+
 
 router.put('/:id', async (req,res) => {
 	let {name} = req.body;
@@ -33,12 +54,15 @@ router.delete('/:id', async (req,res) => {
 })
 
 router.post("/", async (req,res) => {
-	let {name} = req.body;
+	let {name} = req.body.checklist; // agora não irar ser passado pelo bosy mais sim por um objeto checklist
+	let checklist = new Checklist({name});
+
 	try{
-		let checklist = await Checklist.create({name});
-		res.status(200).json(checklist);
+		await Checklist.save();
+		//res.status(200).json(checklist);
+		res.redirect('/checklists'); // redirecionamento
 	}catch (error){
-		res.status(422).json(error);
+		res.status(500).json(error);
 	}
 })
 
@@ -50,13 +74,5 @@ router.get("/:id", (req,res) => {
 })
 */
 
-router.get("/:id", async(req,res) => {
-	try{
-		let checklist = await Checklist.findById(req.params.id);
-		res.status(200).json(checklist);
-	}catch (error){
-		res.status(422).json(error);
-	}
-})
 
 module.exports = router;
