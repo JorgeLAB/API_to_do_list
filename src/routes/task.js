@@ -29,4 +29,17 @@ checklistDependentRoute.post('/:id/tasks', async (req,res) => { // este id perte
 	}
 })
 
+checklistDependentRoute.delete('/task/:id', async (req,res) => {
+	try{
+		let task = await Task.findByIdAndDelete(req.params.id);
+		let checklist = await Checklist.findById(task.checklist);
+		let removeTask = checklist.tasks.indexOf(task.id);
+		checklist.tasks.splice(removeTask,1);
+		checklist.save();
+		res.status(200).redirect(`/checklists/${task.checklist}`)
+	}catch (error){
+		res.status(422).render('pages/new', {error: "Erro ao deletar"});
+	}
+})
+
 module.exports = {checklistDependent: checklistDependentRoute }; // estamos passando um middleware específico podemos fazer a criação de mais.

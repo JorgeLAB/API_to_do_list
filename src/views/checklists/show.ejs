@@ -20,7 +20,7 @@
                 <input type="checkbox" /> <%= task.name %>
               </div>
               <div class="column is-one-fifth">
-                <button class="button is-danger is-small">Remover</button>
+                <a href="/checklists/task/<%= task.id%>?_method=delete" class="button is-danger is-small" >Remover</a>
               </div>
             </div>
         <% }) %>
