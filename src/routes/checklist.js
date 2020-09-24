@@ -32,8 +32,6 @@ router.get("/:id", async (req,res) => {
 	}
 })
 
-
-
 router.put('/:id', async (req,res) => {
 	let {name} = req.body;
 	try{
@@ -58,11 +56,11 @@ router.post("/", async (req,res) => {
 	let checklist = new Checklist({name});
 
 	try{
-		await Checklist.save();
+		await checklist.save();
 		//res.status(200).json(checklist);
 		res.redirect('/checklists'); // redirecionamento
 	}catch (error){
-		res.status(500).json(error);
+		res.status(500).render('checklists/new', {checklist: {...checklist, error}});
 	}
 })
 

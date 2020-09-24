@@ -11,6 +11,7 @@ app.use(express.json());
 app.set('views', path.join(__dirname, 'src/views'));
 
 app.use(express.static(path.join(__dirname, 'public')));  // Habilitando o use de arquivos estáticos
+app.use(express.urlencoded({extended:true}));
 
 /*
 // Podemos criar um middleware está é a estrutura.
