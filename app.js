@@ -1,8 +1,12 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+
 const ChecklistRouter = require("./src/routes/checklist.js"); // Aqui nós importamos o checklist,
 const rootRouter = require("./src/routes/index.js");
+const taskRouter = require("./src/routes/task.js"); // Aqui nós importamos o checklist,
+
+
 const methodOverride = require("method-override")
 
 
@@ -38,13 +42,20 @@ app.get('/', (req,res) => {
 app.get("/json", (req,res) =>{
 	res.json({"title": "Era um vez", "lugar": "Meio do nada"})
 });
-
 */
-
-app.use("/checklists",ChecklistRouter);
 app.use('/', rootRouter);
+app.use("/checklists", taskRouter.checklistDependent); // nós podemos apontar mais de um middleware para uma url.
+app.use("/checklists", ChecklistRouter);
+
+
 
 app.listen(3000, () => {
 	console.log("Servidor Ligado");
 });
+
+
+
+
+
+
 

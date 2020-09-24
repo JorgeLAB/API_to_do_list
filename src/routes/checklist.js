@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router(); // uma ferramenta do express;
-const Checklist = require("../models/checklist")
+const Checklist = require("../models/checklist");
 
 // Nesta rota iremos retornar todos os checklist presente no banco
 
@@ -49,11 +49,10 @@ router.put('/:id', async (req,res) => {
 
 router.get("/:id", async (req,res) => {
 	try{
-		let checklist = await Checklist.findById(req.params.id);
-		console.log(checklist.tasks)
+		let checklist = await Checklist.findById(req.params.id).populate('tasks'); // os tasks não aparecem automaticamente sem o populate
 		res.render('checklists/show', {checklist: checklist}); // aqui também estou passando variável para ser empregada na view
 	}catch (error){
-		res.status(422).json(error);
+		res.status(500).render('pages/error', {error: error})
 	}
 })
 
@@ -64,7 +63,7 @@ router.delete('/:id', async (req,res) => {
 		res.redirect('/checklists')
 	}catch (error){
 		//res.status(422).json(error);
-		res.status(500).render('pages/erro', {error: "Não foi possível deletar lista"})
+		res.status(500).render('pages/error', {error: "Não foi possível deletar lista"})
 	}
 })
 
