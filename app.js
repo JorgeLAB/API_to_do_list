@@ -1,11 +1,14 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const ChecklistRouter = require("./src/routes/checklist.js"); // Aqui nós importamos o checklist,
+const rootRouter = require("./src/routes/index.js");
+const methodOverride = require("method-override")
+
+
 app.set('view engine', 'ejs');
 require('./src/config/database.js');
 
-const ChecklistRouter = require("./src/routes/checklist.js"); // Aqui nós importamos o checklist,
-const rootRouter = require("./src/routes/index.js");
 
 app.use(express.json());
 app.set('views', path.join(__dirname, 'src/views'));
@@ -13,6 +16,8 @@ app.set('views', path.join(__dirname, 'src/views'));
 app.use(express.static(path.join(__dirname, 'public')));  // Habilitando o use de arquivos estáticos
 app.use(express.urlencoded({extended:true}));
 
+
+app.use(methodOverride('_method', {methods: ['POST','GET']}));
 /*
 // Podemos criar um middleware está é a estrutura.
 

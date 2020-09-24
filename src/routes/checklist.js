@@ -22,6 +22,31 @@ router.get("/new", async (req,res) => {
 	}
 })
 
+router.get("/:id/edit", async (req,res) => {
+	try{
+		let checklist = await Checklist.findById(req.params.id);			
+		res.status(200).render('checklists/edit', {checklist: checklist});
+	}catch (error){
+		res.status(500).render('pages/error', {error: "Error ao exibir edição de lista"});
+	}
+})
+
+router.put('/:id', async (req,res) => {
+	let {name} = req.body.checklist;
+	let checklist = await Checklist.findById(req.params.id)
+	try{
+		if(name == ''){
+		  throw "Nome inválido";	
+		}else{
+			await checklist.update({name}); // passando-se o parâmetro new com valor true podemos estar passando a atualização no resultado não o 
+			res.redirect('/checklists');			
+		}
+	}catch (error){
+		//res.status(422).json(error);
+		res.render( `checklists/edit`, {checklist: {checklist, error}}) 
+	}
+})
+
 router.get("/:id", async (req,res) => {
 	try{
 		let checklist = await Checklist.findById(req.params.id);
@@ -32,22 +57,14 @@ router.get("/:id", async (req,res) => {
 	}
 })
 
-router.put('/:id', async (req,res) => {
-	let {name} = req.body;
-	try{
-		let checklist = await Checklist.findByIdAndUpdate(req.params.id, {name}); // passando-se o parâmetro new com valor true podemos estar passando a atualização no resultado não o 
-		res.status(200).json(checklist);
-	}catch (error){
-		res.status(422).json(error);
-	}
-})
-
 router.delete('/:id', async (req,res) => {
 	try{
 		let checklist = await Checklist.findByIdAndRemove(req.params.id); 
-		res.status(200).json({"checklist": `${req.params.id} - Deleltada`}); 
+		//res.status(200).json({"checklist": `${req.params.id} - Deleltada`}); 
+		res.redirect('/checklists')
 	}catch (error){
-		res.status(422).json(error);
+		//res.status(422).json(error);
+		res.status(500).render('pages/erro', {error: "Não foi possível deletar lista"})
 	}
 })
 
