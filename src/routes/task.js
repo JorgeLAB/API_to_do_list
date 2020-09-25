@@ -42,4 +42,18 @@ checklistDependentRoute.delete('/task/:id', async (req,res) => {
 	}
 })
 
+
+checklistDependentRoute.put('/task/:id', async (req,res) => {
+	let task = await Task.findById(req.params.id);
+	try{
+		task.set(req.body.task);
+		await task.save();
+		res.status(200).json({task}) // chamada assicrona não haverá reload
+	}catch (error){
+		let errors = error.errors
+		res.status(422).json({ task: {...errors}});
+	}
+})
+
+
 module.exports = {checklistDependent: checklistDependentRoute }; // estamos passando um middleware específico podemos fazer a criação de mais.
